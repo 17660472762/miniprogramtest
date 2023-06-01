@@ -1,0 +1,1 @@
+Run go run mini_program/main.go
