@@ -1,0 +1,17 @@
+# ide
+.vscode
+.idea
+.cloudbase
+
+# bin
+_output
+
+# tmp
+*.txt
+*.tmp
+*.log
+*.json
+test
+
+# go
+# vendor

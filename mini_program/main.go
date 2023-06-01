@@ -1,13 +1,14 @@
 package main
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
-
+	log.Print("微信云托管服务启动成功")
 	// 创建一个默认的路由引擎
 	r := gin.Default()
 	//获取信息
@@ -20,8 +21,7 @@ func main() {
 		User.Phone = "12345678910"
 		c.JSON(http.StatusOK, User)
 	})
-	//接入:1234端口
-	r.Run(":1234")
+	r.Run()
 }
 
 type AccessToken struct {
