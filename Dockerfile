@@ -6,7 +6,7 @@ ADD . /app/
 
 WORKDIR /app
 
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main mini_program/main.go
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main cmd/mini_program/main.go
 
 FROM alpine:latest
 
