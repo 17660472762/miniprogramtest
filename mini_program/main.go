@@ -1,10 +1,13 @@
 package main
 
 import (
+	"encoding/json"
+	"io/ioutil"
 	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/go-querystring/query"
 )
 
 func main() {
@@ -21,12 +24,19 @@ func main() {
 		User.Phone = "12345678910"
 		c.JSON(http.StatusOK, User)
 	})
+	r.GET("/accessToken", func(c *gin.Context) {
+		accessToken, err := getAccessToken(c)
+		if err != nil {
+			log.Printf("err%v", err)
+		}
+		c.JSON(http.StatusOK, accessToken)
+	})
 	r.Run()
 }
 
 type AccessToken struct {
-	AccessToken string `json:"access_token"`
-	ExpiresIn   string `json:"expires_in"`
+	AccessToken string `json:"access_token" form:"access_token" url:"access_token"`
+	ExpiresIn   int64  `json:"expires_in" form:"expires_in" url:"expires_in"`
 }
 
 type WechatConfig struct {
@@ -34,7 +44,37 @@ type WechatConfig struct {
 	Secret string `json:"secret"`
 }
 
-func getAccessToken(c *gin.Context) (AccessToken, error) {
+type AccessTokenParam struct {
+	GrantType string `json:"grant_type" form:"grant_type" url:"grant_type"`
+	AppID     string `json:"appid" form:"appid" url:"appid"`
+	Secret    string `json:"secret" form:"secret" url:"secret"`
+}
 
-	return AccessToken{}, nil
+func getAccessToken(c *gin.Context) (AccessToken, error) {
+	var result AccessToken
+	config := AccessTokenParam{
+		GrantType: "client_credential",
+		AppID:     "wxde659347f55b799b",
+		Secret:    "9a022075538836978d7b3003b72bfcfd",
+	}
+	body, _ := query.Values(config)
+	request, err := http.NewRequest("GET", "https://api.weixin.qq.com/cgi-bin/token?"+body.Encode(), nil)
+	if err != nil {
+		return result, err
+	}
+	request.Header.Set("Content-Type", "application/json")
+
+	client := &http.Client{}
+	response, err := client.Do(request)
+	if err != nil {
+		return result, err
+	}
+	defer response.Body.Close()
+	resp, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		return result, err
+	}
+	err = json.Unmarshal(resp, &result)
+	log.Printf("result:%v", result)
+	return result, err
 }
