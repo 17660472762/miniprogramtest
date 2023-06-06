@@ -12,10 +12,26 @@ func main() {
 		Name:  "mini_program",
 		Usage: "",
 		Action: func(ctx *cli.Context) error {
-			return server.NewBuilder().
+			appid := ctx.String("appid")
+			secret := ctx.String("secret")
+			return server.NewBuilder(appid, secret).
 				Router().
 				Build().
 				Run()
+		},
+		Flags: []cli.Flag{
+			&cli.StringFlag{
+				Name:     "appid",
+				Value:    "",
+				Usage:    "",
+				Required: true,
+			},
+			&cli.StringFlag{
+				Name:     "secret",
+				Value:    "",
+				Usage:    "",
+				Required: true,
+			},
 		},
 	}
 	err := app.Run(os.Args)

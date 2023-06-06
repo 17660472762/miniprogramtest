@@ -17,12 +17,13 @@ type Builder struct {
 	svr *Server
 }
 
-func NewBuilder() *Builder {
+func NewBuilder(appid, secret string) *Builder {
 	engine := gin.New()
 	engine.Use(gin.Recovery())
 	return &Builder{
 		svr: &Server{
-			engine: engine,
+			engine:  engine,
+			usersvc: user.NewService(appid, secret),
 		},
 	}
 
@@ -33,8 +34,9 @@ func (builder *Builder) Router() *Builder {
 }
 
 func (s *Server) router() {
-	s.engine.GET("/api/v1/menssage/receive", wrap.Wrap(s.messagesvc.Receive))
+	s.engine.GET("/api/v1/menssage/receive", s.messagesvc.Receive)
 	s.engine.GET("/api/v1/user/get", wrap.Wrap(s.usersvc.GetUser))
+	s.engine.GET("/api/v1/user/access_token", wrap.Wrap(s.usersvc.GetAccessToken))
 }
 
 func (builder *Builder) Build() *Server {
