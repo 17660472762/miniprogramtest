@@ -2,6 +2,7 @@ package message
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/17660472762/miniprogramtest/pkg/codec"
@@ -14,5 +15,6 @@ func (s *Service) Receive(ctx *gin.Context) {
 	if err := ctx.BindJSON(&req); err != nil {
 		fmt.Printf("error%v", results.NewError(results.CodeBadRequest, "", "参数错误", err))
 	}
-	ctx.JSON(http.StatusOK, "")
+	log.Printf("text%v", req)
+	ctx.JSON(http.StatusOK, nil)
 }
