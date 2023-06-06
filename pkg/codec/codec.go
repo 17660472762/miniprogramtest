@@ -19,3 +19,5 @@ type ReceiveTextMsg struct {
 	Content      string `json:"Content" form:"Content" url:"Content"`
 	MsgId        int64  `json:"MsgId" form:"MsgId" url:"MsgId"`
 }
+
+const GrantType = "client_credential"
