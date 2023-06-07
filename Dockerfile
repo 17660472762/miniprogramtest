@@ -6,11 +6,18 @@ ADD . /app/
 
 WORKDIR /app
 
+
+RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+
+RUN echo 'Asia/Shanghai' >/etc/timezone
+
 RUN go env -w GOPROXY=https://goproxy.cn
 
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main cmd/mini_program/main.go
 
 FROM alpine:latest
+
+RUN apk add ca-certificates
 
 WORKDIR /app
 
