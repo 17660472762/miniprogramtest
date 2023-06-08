@@ -8,6 +8,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/17660472762/miniprogramtest/pkg/codec"
 	"github.com/17660472762/miniprogramtest/pkg/results"
@@ -23,7 +24,13 @@ func (s *Service) Receive(ctx *gin.Context) {
 	log.Printf("openid:%v", openid)
 	log.Printf("text%+v", req)
 	process(ctx, &req, openid)
-	ctx.JSON(http.StatusOK, nil)
+
+	ctx.JSON(http.StatusOK, codec.TransferMsg{
+		ToUserName:   req.ToUserName,
+		FromUserName: openid,
+		CreateTime:   time.Now().Unix(),
+		MsgType:      "transfer_customer_service",
+	})
 }
 
 func process(ctx context.Context, req *codec.ReceiveTextMsg, openid string) {

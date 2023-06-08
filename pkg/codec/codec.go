@@ -76,3 +76,10 @@ type MiniProgramPageMsg struct {
 		TumbMediaId string `json:"thumb_media_id" form:"thumb_media_id" url:"thumb_media_id"`
 	} `json:"miniprogrampage" form:"miniprogrampage" url:"miniprogrampage"`
 }
+
+type TransferMsg struct {
+	ToUserName   string `json:"ToUserName" form:"ToUserName" url:"ToUserName"`
+	FromUserName string `json:"FromUserName" form:"FromUserName" url:"FromUserName"`
+	CreateTime   int64  `json:"CreateTime" form:"CreateTime" url:"CreateTime"`
+	MsgType      string `json:"MsgType" form:"MsgType" url:"MsgType"`
+}
