@@ -40,7 +40,9 @@ func process(ctx context.Context, req *codec.ReceiveTextMsg, openid string) {
 			if err != nil {
 				log.Printf("send err:%+v", err)
 			}
-			request, err := http.NewRequest(http.MethodPost, "https://api.weixin.qq.com/cgi-bin/message/custom/send?", bytes.NewBuffer(data))
+			request, err := http.NewRequest(http.MethodPost, "https://api.weixin.qq.com/cgi-bin/message/custom/send?", bytes.NewReader(data))
+			request.Header.Set("Content-Type", "application/json")
+
 			if err != nil {
 				log.Printf("send request err:%+v", err)
 			}
