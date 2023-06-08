@@ -58,7 +58,7 @@ func process(ctx context.Context, req *codec.ReceiveTextMsg, openid string) {
 			if err != nil {
 				log.Printf("send request err:%+v", err)
 			}
-			log.Printf("resp:%+v", resp)
+			log.Printf("resp:%+v", string(resp))
 
 			err = json.Unmarshal(resp, &result)
 			if err != nil {
