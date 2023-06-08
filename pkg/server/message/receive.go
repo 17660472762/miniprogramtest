@@ -26,8 +26,8 @@ func (s *Service) Receive(ctx *gin.Context) {
 	process(ctx, &req, openid)
 
 	ctx.JSON(http.StatusOK, codec.TransferMsg{
-		ToUserName:   req.ToUserName,
-		FromUserName: openid,
+		ToUserName:   openid,
+		FromUserName: req.ToUserName,
 		CreateTime:   time.Now().Unix(),
 		MsgType:      "transfer_customer_service",
 	})
